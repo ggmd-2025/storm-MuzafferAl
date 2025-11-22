@@ -36,7 +36,6 @@ public class NothingBolt implements IRichBolt {
 	
 		try {
 			String n = t.getValueByField("json").toString();
-			logger.info(t.getValueByField("runners") + " tab recus");
 			logger.info( "=> " + n + " treated!");
 			collector.emit(t, new Values(n));
 			collector.ack(t);
