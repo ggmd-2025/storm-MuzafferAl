@@ -69,4 +69,17 @@ public class FilteredTortoise implements Serializable {
     public void setMaxcel(int maxcel) {
         this.maxcel = maxcel;
     }
+
+    @Override
+    public String toString() {
+        return "FilteredTortoise{" +
+               "id=" + id +
+               ", top=" + top +
+               ", nom='" + nom + '\'' +
+               ", nbCellsParcouru=" + nbCellsParcouru +
+               ", total=" + total +
+               ", maxcel=" + maxcel +
+               '}';
+    }
+
 }

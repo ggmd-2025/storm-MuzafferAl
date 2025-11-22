@@ -23,8 +23,6 @@ public class ExitBolt implements IRichBolt {
 	
 	public ExitBolt (int port) {
 		this.port = port;
-		this.semit = new StreamEmiter(this.port);
-		
 	}
 	
 	/* (non-Javadoc)
@@ -70,6 +68,7 @@ public class ExitBolt implements IRichBolt {
 	 */
 	@SuppressWarnings("rawtypes")
 	public void prepare(Map arg0, TopologyContext context, OutputCollector collector) {
+        this.semit = new StreamEmiter(this.port);
 		this.collector = collector;
 	}
 }

@@ -1,5 +1,6 @@
 package stormTP.operator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -8,6 +9,7 @@ import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
 import org.apache.storm.tuple.Values;
+import stormTP.pojo.FilteredTortoise;
 import stormTP.pojo.RaceData;
 import stormTP.pojo.Tortoise;
 
@@ -27,10 +29,10 @@ public class MyTortoiseBolt implements IRichBolt {
     private static final long serialVersionUID = 4262369370788107343L;
 
     private static Logger logger = Logger.getLogger("MyTortoiseBoltLogger");
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final int MY_TORTOISE_ID = 2;
-    private static final String MY_TORTOISE_NAME = "Mad";
+    private static final String MY_TORTOISE_NAME = "Storm";
 
     private OutputCollector collector;
 
@@ -50,19 +52,15 @@ public class MyTortoiseBolt implements IRichBolt {
 
             final List<Tortoise> tortoises = raceData.getRunners();
 
-            tortoises.stream()
-                    .filter(tr -> tr.getId() == MY_TORTOISE_ID)
-                    .forEach(tr -> {
-                        final int nbCellsParcourus = tr.getTour() * tr.getMaxcel() + tr.getCellule();
-                        collector.emit(new Values(
-                                tr.getId(),
-                                tr.getTop(),
-                                MY_TORTOISE_NAME,
-                                nbCellsParcourus,
-                                tr.getTotal(),
-                                tr.getMaxcel()
-                        ));
-                    });
+            for (Tortoise tr : tortoises) {
+                if (tr.getId() == MY_TORTOISE_ID) {
+                    int nbCellsParcourus = tr.getTour() * tr.getMaxcel() + tr.getCellule();
+                    FilteredTortoise ft = new FilteredTortoise(
+                            tr.getId(), tr.getTop(), MY_TORTOISE_NAME, nbCellsParcourus, tr.getTotal(), tr.getMaxcel()
+                    );
+                    collector.emit(new Values(mapper.writeValueAsString(ft)));
+                }
+            }
             collector.ack(t);
         } catch (Exception e) {
             System.err.println("Empty tuple.");
@@ -74,7 +72,7 @@ public class MyTortoiseBolt implements IRichBolt {
      * @see backtype.storm.topology.IComponent#declareOutputFields(backtype.storm.topology.OutputFieldsDeclarer)
      */
     public void declareOutputFields(OutputFieldsDeclarer arg0) {
-        arg0.declare(new Fields("id", "top", "nom", "nbCellsParcourus", "total", "maxcel"));
+        arg0.declare(new Fields("myTortoise"));
     }
 
 
