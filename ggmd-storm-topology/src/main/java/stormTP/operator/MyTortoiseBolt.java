@@ -62,8 +62,8 @@ public class MyTortoiseBolt implements IRichBolt {
                                 tr.getTotal(),
                                 tr.getMaxcel()
                         ));
-                        collector.ack(t);
                     });
+            collector.ack(t);
         } catch (Exception e) {
             System.err.println("Empty tuple.");
         }
@@ -74,7 +74,7 @@ public class MyTortoiseBolt implements IRichBolt {
      * @see backtype.storm.topology.IComponent#declareOutputFields(backtype.storm.topology.OutputFieldsDeclarer)
      */
     public void declareOutputFields(OutputFieldsDeclarer arg0) {
-        arg0.declare(new Fields("json"));
+        arg0.declare(new Fields("id", "top", "nom", "nbCellsParcourus", "total", "maxcel"));
     }
 
 
