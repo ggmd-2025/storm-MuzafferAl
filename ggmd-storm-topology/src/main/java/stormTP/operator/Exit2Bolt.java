@@ -1,7 +1,8 @@
 package stormTP.operator;
 
+
 import java.util.Map;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -9,23 +10,20 @@ import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import org.apache.storm.tuple.Values;
+import stormTP.stream.StreamEmiter;
 
 
-/**
- * Sample of stateless operator
- * @author lumineau
- *
- */
-public class NothingBolt implements IRichBolt {
+public class Exit2Bolt implements IRichBolt {
 
-	private static final long serialVersionUID = 4262369370788107343L;
-
-	private static Logger logger = Logger.getLogger("NothingBoltLogger");
+	private static final long serialVersionUID = 4262369370788107342L;
+	//private static Logger logger = Logger.getLogger("ExitBolt");
 	private OutputCollector collector;
+	int port = -1;
+	StreamEmiter semit = null;
 	
-	
-	public NothingBolt () {
+	public Exit2Bolt (int port) {
+		this.port = port;
+		this.semit = new StreamEmiter(this.port);
 		
 	}
 	
@@ -34,20 +32,16 @@ public class NothingBolt implements IRichBolt {
 	 */
 	public void execute(Tuple t) {
 	
-		try {
-			String n = t.getValueByField("json").toString();
-			logger.info(t.getValueByField("runners") + " tab recus");
-			logger.info( "=> " + n + " treated!");
-			collector.emit(t, new Values(n));
-			collector.ack(t);
-		}catch (Exception e){
-			System.err.println("Empty tuple.");
-		}
+		String n = t.getValueByField("json").toString();
+	
+		this.semit.send(n);
+		collector.ack(t);
+		
 		return;
 		
 	}
 	
-	
+
 	
 	/* (non-Javadoc)
 	 * @see backtype.storm.topology.IComponent#declareOutputFields(backtype.storm.topology.OutputFieldsDeclarer)
@@ -70,8 +64,6 @@ public class NothingBolt implements IRichBolt {
 	public void cleanup() {
 		
 	}
-	
-	
 	
 	/* (non-Javadoc)
 	 * @see backtype.storm.topology.IRichBolt#prepare(java.util.Map, backtype.storm.task.TopologyContext, backtype.storm.task.OutputCollector)

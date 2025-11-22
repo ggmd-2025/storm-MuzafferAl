@@ -17,15 +17,15 @@ import org.apache.storm.tuple.Values;
  * @author lumineau
  *
  */
-public class NothingBolt implements IRichBolt {
+public class MyTortoiseBolt implements IRichBolt {
 
 	private static final long serialVersionUID = 4262369370788107343L;
 
-	private static Logger logger = Logger.getLogger("NothingBoltLogger");
+	private static Logger logger = Logger.getLogger("MyTortoiseBoltLogger");
 	private OutputCollector collector;
 	
 	
-	public NothingBolt () {
+	public MyTortoiseBolt () {
 		
 	}
 	
@@ -36,8 +36,6 @@ public class NothingBolt implements IRichBolt {
 	
 		try {
 			String n = t.getValueByField("json").toString();
-			logger.info(t.getValueByField("runners") + " tab recus");
-			logger.info( "=> " + n + " treated!");
 			collector.emit(t, new Values(n));
 			collector.ack(t);
 		}catch (Exception e){

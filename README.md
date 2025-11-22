@@ -15,7 +15,7 @@ docker build --build-arg ARCH=arm64 -t jaeo/ggmd:tp-stream .
 # Codespaces version
 docker build -t jaeo/ggmd:tp-stream .
 ```
-
+xz
 
 ### Option A: Run Topology in Local Cluster
 
