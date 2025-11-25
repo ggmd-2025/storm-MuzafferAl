@@ -14,17 +14,17 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 
-public class Exit3Bolt implements IRichBolt {
+public class Exit6Bolt implements IRichBolt {
 
     private static final long serialVersionUID = 4262369370788107342L;
-    private static Logger logger = Logger.getLogger("Exit3Bolt");
+    private static Logger logger = Logger.getLogger("Exit6Bolt");
     private static ObjectMapper mapper = new ObjectMapper();
     //private static Logger logger = Logger.getLogger("ExitBolt");
     private OutputCollector collector;
     int port = -1;
     StreamEmiter semit = null;
 
-    public Exit3Bolt(int port) {
+    public Exit6Bolt(int port) {
         this.port = port;
     }
 
@@ -33,7 +33,7 @@ public class Exit3Bolt implements IRichBolt {
      */
     public void execute(Tuple t) {
         String n = (String) t.getValueByField("json");
-        logger.info("Exit3Bolt : output : " + n);
+        logger.info("Exit6Bolt : output : " + n);
         this.semit.send(n);
         collector.ack(t);
 

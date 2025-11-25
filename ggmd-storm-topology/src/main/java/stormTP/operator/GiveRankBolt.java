@@ -80,7 +80,7 @@ public class GiveRankBolt implements IRichBolt {
      * @see backtype.storm.topology.IComponent#declareOutputFields(backtype.storm.topology.OutputFieldsDeclarer)
      */
     public void declareOutputFields(OutputFieldsDeclarer arg0) {
-        arg0.declare(new Fields("tortoisesRanked"));
+        arg0.declare(new Fields("json"));
     }
 
 

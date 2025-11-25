@@ -57,6 +57,16 @@ public class TestStatefulWindowBolt extends BaseStatefulWindowedBolt<KeyValueSta
         
     }
 
+    private String determineEvolution(int oldRank, int newRank) {
+        if (newRank < oldRank) {
+            return "En progression";
+        } else if (newRank > oldRank) {
+            return "En régression";
+        } else {
+            return "Constant";
+        }
+    }
+
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("json"));

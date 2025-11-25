@@ -10,6 +10,7 @@ public class FilteredTortoise implements Serializable {
     private int nbCellsParcouru;
     private int total;
     private int maxcel;
+    private String rang;
 
     public FilteredTortoise() {}
 
@@ -68,6 +69,14 @@ public class FilteredTortoise implements Serializable {
 
     public void setMaxcel(int maxcel) {
         this.maxcel = maxcel;
+    }
+
+    public void setRang(String rang) {
+        this.rang = rang;
+    }
+
+    public String getRang() {
+        return rang;
     }
 
     @Override
